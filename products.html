@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Products – M/S Prime Artisan UPVC | Aluminium & Window Hardware Catalogue</title>
+  <meta name="description" content="Browse our complete range of 137+ UPVC and aluminium hardware products including handles, rollers, hinges, cylinders, locks, gaskets and accessories." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Page-specific overrides ── */
+    body { background: #f5f6fa; }
+
+    .products-page-hero {
+      background: linear-gradient(135deg, var(--primary) 0%, #0a1628 100%);
+      padding: 100px 0 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .products-page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('images/hero_banner.png') center/cover no-repeat;
+      opacity: 0.08;
+    }
+    .products-page-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .products-page-hero h1 span { color: var(--accent); }
+    .products-page-hero p {
+      color: rgba(255,255,255,0.75);
+      font-size: 1.05rem;
+      max-width: 560px;
+      margin: 0 auto 28px;
+      position: relative;
+    }
+    .hero-breadcrumb {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+      position: relative;
+    }
+    .hero-breadcrumb a { color: var(--accent); text-decoration: none; }
+    .hero-breadcrumb span { color: rgba(255,255,255,0.3); }
+
+    /* ── Filter & Search Bar ── */
+    .filter-bar {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 16px 0;
+      position: sticky;
+      top: 70px;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .filter-bar-inner {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-search {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+      max-width: 320px;
+    }
+    .filter-search svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      width: 16px;
+      height: 16px;
+    }
+    .filter-search input {
+      width: 100%;
+      padding: 9px 12px 9px 36px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      outline: none;
+      font-family: var(--font-body);
+      background: #f8fafc;
+      transition: border-color 0.2s;
+    }
+    .filter-search input:focus { border-color: var(--accent); background: #fff; }
+
+    .filter-cats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    .filter-cat-btn {
+      padding: 7px 14px;
+      border-radius: 100px;
+      border: 1.5px solid #e2e8f0;
+      background: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+      white-space: nowrap;
+    }
+    .filter-cat-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-cat-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .filter-count {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    /* ── Products Gallery Grid ── */
+    .gallery-section { padding: 36px 0 80px; }
+    .products-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .product-tile {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      border: 1.5px solid transparent;
+    }
+    .product-tile:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+      border-color: var(--accent);
+    }
+    .product-tile.hidden { display: none; }
+    .tile-img-wrap {
+      position: relative;
+      background: #fafafa;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 12px;
+    }
+    .tile-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.4s ease;
+    }
+    .product-tile:hover .tile-img-wrap img { transform: scale(1.08); }
+    .tile-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 22, 40, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      gap: 8px;
+    }
+    .product-tile:hover .tile-overlay { opacity: 1; }
+    .tile-overlay-btn {
+      background: #fff;
+      color: var(--primary);
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-body);
+      transition: background 0.2s;
+    }
+    .tile-overlay-btn:hover { background: var(--accent); color: #fff; }
+    .tile-body {
+      padding: 12px 14px 14px;
+      border-top: 1px solid #f1f5f9;
+    }
+    .tile-num {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .tile-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--primary);
+      line-height: 1.3;
+    }
+    .tile-cat {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    /* ── Lightbox Modal ── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .lightbox.open { opacity: 1; visibility: visible; }
+    .lightbox-box {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.92);
+      transition: transform 0.3s ease;
+    }
+    .lightbox.open .lightbox-box { transform: scale(1); }
+    .lightbox-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .lightbox-title { font-size: 1rem; font-weight: 700; color: var(--primary); }
+    .lightbox-code { font-size: 0.78rem; color: var(--accent); font-weight: 600; }
+    .lightbox-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: #f1f5f9;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-size: 1.2rem;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: #fee2e2; color: #ef4444; }
+    .lightbox-img {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fafafa;
+      padding: 24px;
+      max-height: 420px;
+    }
+    .lightbox-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.9);
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: all 0.2s;
+    }
+    .lightbox-nav:hover { background: var(--accent); color: #fff; }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+    .lightbox-footer {
+      padding: 16px 20px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .lightbox-counter {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-left: auto;
+    }
+
+    /* ── No results ── */
+    .no-results {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 60px 20px;
+      color: #94a3b8;
+    }
+    .no-results svg { margin: 0 auto 16px; display: block; opacity: 0.3; }
+
+    /* ── CTA banner ── */
+    .enquiry-banner {
+      background: linear-gradient(135deg, var(--accent), #e07010);
+      border-radius: 20px;
+      padding: 40px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+    .enquiry-banner h3 { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .enquiry-banner p { color: rgba(255,255,255,0.85); font-size: 0.92rem; }
+    .enquiry-banner-btns { display: flex; gap: 12px; flex-shrink: 0; flex-wrap: wrap; }
+    .btn-white {
+      background: #fff;
+      color: var(--accent);
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+      border: none;
+      cursor: pointer;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+    .btn-white-outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.6);
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+    .btn-white-outline:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+    @media (max-width: 768px) {
+      .products-gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+      .filter-bar-inner { gap: 10px; }
+      .enquiry-banner { padding: 28px 24px; text-align: center; justify-content: center; }
+    }
+    @media (max-width: 480px) {
+      .products-gallery { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ TOP BAR ══ -->
+<div id="topbar">
+  <div class="container topbar-inner">
+    <div class="topbar-contact">
+      <a href="tel:+919953535910" id="topbar-phone">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        +91 99535 35910
+      </a>
+      <a href="mailto:info@msprime.co.in" id="topbar-email">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        info@msprime.co.in
+      </a>
+    </div>
+    <div class="topbar-right">
+      <a href="index.html#catalogue" class="topbar-catalogue-btn">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        Download Catalogue
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HEADER ══ -->
+<header id="main-header" class="scrolled" role="banner">
+  <div class="container nav-inner">
+    <a href="index.html" class="logo" aria-label="M/S Prime Artisan UPVC Home">
+      <div class="logo-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">M/S Prime Artisan UPVC</span>
+        <span class="logo-tagline">Hardware Wholesaler & Retailer</span>
+      </div>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="index.html#about">About Us</a>
+      <a href="products.html" class="active">Products</a>
+      <a href="index.html#catalogue">Catalogue</a>
+      <a href="index.html#gallery">Gallery</a>
+      <a href="index.html#dealer">Dealer Network</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="https://wa.me/919953535910" class="btn btn-outline btn-sm" target="_blank" rel="noopener">
+        <svg fill="currentColor" viewBox="0 0 24 24" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a href="index.html#inquiry" class="btn btn-primary btn-sm">Request Quote</a>
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobile-nav">
+  <a href="index.html">Home</a>
+  <a href="index.html#about">About Us</a>
+  <a href="products.html">Products</a>
+  <a href="index.html#catalogue">Catalogue</a>
+  <a href="index.html#gallery">Gallery</a>
+  <a href="index.html#dealer">Dealer Network</a>
+  <a href="index.html#contact">Contact</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="products-page-hero">
+  <div class="container">
+    <div class="hero-breadcrumb" style="margin-bottom:20px;">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <span style="color:rgba(255,255,255,0.7);">All Products</span>
+    </div>
+    <h1>Our Complete <span>Product Range</span></h1>
+    <p>Browse all 115 UPVC & Aluminium hardware products. Click any product to view full size and enquire.</p>
+  </div>
+</section>
+
+<!-- ══ STICKY FILTER BAR ══ -->
+<div class="filter-bar" id="filter-bar">
+  <div class="container filter-bar-inner">
+    <div class="filter-search">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input type="search" id="gallery-search" placeholder="Search products…" aria-label="Search products" />
+    </div>
+    <div class="filter-cats" role="group" aria-label="Filter by category">
+      <button class="filter-cat-btn active" data-cat="all" id="gf-all">All Products</button>
+      <button class="filter-cat-btn" data-cat="upvc" id="gf-upvc">uPVC Hardware</button>
+      <button class="filter-cat-btn" data-cat="aluminium" id="gf-aluminium">Aluminium Hardware</button>
+      <button class="filter-cat-btn" data-cat="accessories" id="gf-accessories">Accessories</button>
+    </div>
+    <div class="filter-count" id="filter-count">Showing 115 products</div>
+  </div>
+</div>
+
+<!-- ══ GALLERY ══ -->
+<section class="gallery-section">
+  <div class="container">
+
+    <!-- Enquiry Banner -->
+    <div class="enquiry-banner">
+      <div>
+        <h3>Need a Quote for Bulk Order?</h3>
+        <p>Contact us for dealer pricing, distributor terms & custom orders. PAN India delivery.</p>
+      </div>
+      <div class="enquiry-banner-btns">
+        <a href="https://wa.me/919953535910?text=Hi%2C%20I%20want%20to%20enquire%20about%20UPVC%20hardware%20bulk%20order" class="btn-white" target="_blank" rel="noopener">
+          <svg fill="currentColor" viewBox="0 0 24 24" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp Enquiry
+        </a>
+        <a href="index.html#inquiry" class="btn-white-outline">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Request Quote Form
+        </a>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-gallery" id="products-gallery">
+      <!-- JS renders tiles here -->
+    </div>
+  </div>
+</section>
+
+<!-- ══ LIGHTBOX ══ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Product viewer">
+  <button class="lightbox-nav lightbox-prev" id="lb-prev" aria-label="Previous product">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+  </button>
+  <div class="lightbox-box">
+    <div class="lightbox-header">
+      <div>
+        <div class="lightbox-code" id="lb-code"></div>
+        <div class="lightbox-title" id="lb-title"></div>
+      </div>
+      <button class="lightbox-close" id="lb-close" aria-label="Close">✕</button>
+    </div>
+    <div class="lightbox-img">
+      <img id="lb-img" src="" alt="" />
+    </div>
+    <div class="lightbox-footer">
+      <a href="https://wa.me/919953535910" class="btn btn-primary btn-sm" id="lb-whatsapp" target="_blank" rel="noopener">
+        <svg fill="currentColor" viewBox="0 0 24 24" width="14" height="14"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enquire on WhatsApp
+      </a>
+      <a href="index.html#inquiry" class="btn btn-outline-dark btn-sm">Request Quote</a>
+      <div class="lightbox-counter" id="lb-counter">1 / 137</div>
+    </div>
+  </div>
+  <button class="lightbox-nav lightbox-next" id="lb-next" aria-label="Next product">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+<!-- Scroll Top -->
+<button id="scroll-top" aria-label="Scroll to top">
+  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+</button>
+
+<!-- WhatsApp Float -->
+<div id="whatsapp-float">
+  <a href="https://wa.me/919953535910?text=Hello%2C%20I%20want%20to%20enquire%20about%20UPVC%20Hardware" class="whatsapp-btn" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+  <div class="whatsapp-tooltip">Chat on WhatsApp</div>
+</div>
+
+<script>
+// ── Product Data (137 real products from your PDF catalogue) ──
+const PRODUCTS = [
+  { id: 1, code: 'PM 1', name: 'Casement Door Set Premium', cat: 'upvc', img: 'images/products/casement_door_set_premium.png' },
+  { id: 2, code: 'PM 2', name: 'Casement Door Set (South)', cat: 'upvc', img: 'images/products/casement_door_set_south.png' },
+  { id: 3, code: 'PM 3', name: 'Sliding D Handle Set', cat: 'upvc', img: 'images/products/sliding_d_handle_set.png' },
+  { id: 4, code: 'PM 4', name: 'Single Point Lock (92/35)', cat: 'upvc', img: 'images/products/single_point_lock_92_or_35.png' },
+  { id: 5, code: 'PM 5', name: 'Bathroom Set (92/35)', cat: 'upvc', img: 'images/products/bathroom_set_92_or_35.png' },
+  { id: 6, code: 'PM 6', name: 'Sliding Door Both Side Handle Key + Knob', cat: 'upvc', img: 'images/products/sliding_door_both_side_handle_key_knob.png' },
+  { id: 7, code: 'PM 7', name: 'Sliding Door Both Side Handle Key + Plain', cat: 'upvc', img: 'images/products/sliding_door_both_side_handle_key_plain.png' },
+  { id: 8, code: 'PM 8', name: 'Sliding Window Both Side Handle Key + Knob', cat: 'upvc', img: 'images/products/sliding_window_both_side_handle_key_knob.png' },
+  { id: 9, code: 'PM 9', name: 'Sliding Window Both Side Handle Key + Plain', cat: 'upvc', img: 'images/products/sliding_window_both_side_handle_key_plain.png' },
+  { id: 10, code: 'PM 10', name: 'D Handle Lockable', cat: 'upvc', img: 'images/products/d_handle_lockable.png' },
+  { id: 11, code: 'PM 11', name: 'D Handle Dummy', cat: 'upvc', img: 'images/products/d_handle_dummy.png' },
+  { id: 12, code: 'PM 12', name: 'Casement Door Handle Premium', cat: 'upvc', img: 'images/products/casement_door_handle.png' },
+  { id: 13, code: 'PM 13', name: 'Casement Handle Thumb', cat: 'upvc', img: 'images/products/casement_handle_thumb.png' },
+  { id: 14, code: 'PM 14', name: 'Sliding Long Handle', cat: 'upvc', img: 'images/products/sliding_long_handle.png' },
+  { id: 15, code: 'PM 15', name: 'Short Neck Handle', cat: 'upvc', img: 'images/products/short_neck_handle.png' },
+  { id: 16, code: 'PM 16', name: 'Short Neck Crank Handle', cat: 'upvc', img: 'images/products/short_neck_crank_handle.png' },
+  { id: 17, code: 'PM 17', name: 'Sliding L Handle', cat: 'upvc', img: 'images/products/sliding_l_handle.png' },
+  { id: 18, code: 'PM 18', name: 'Sliding Handle With Key', cat: 'upvc', img: 'images/products/sliding_handle_with_key.png' },
+  { id: 19, code: 'PM 19', name: 'Pop Up Handle With Key', cat: 'upvc', img: 'images/products/pop_up_handle_with_key.png' },
+  { id: 20, code: 'PM 20', name: 'Pop Up Handle Aluminium / Zinc', cat: 'upvc', img: 'images/products/pop_up_handle_aluminium.png' },
+  { id: 21, code: 'PM 21', name: 'Touch Lock With Keep', cat: 'upvc', img: 'images/products/touch_lock_with_keep.png' },
+  { id: 22, code: 'PM 22', name: 'C Handle (Small)', cat: 'upvc', img: 'images/products/c_handle_small.png' },
+  { id: 23, code: 'PM 23', name: 'C Handle (Big)', cat: 'upvc', img: 'images/products/c_handle_big.png' },
+  { id: 24, code: 'PM 24', name: 'Casement Handle American', cat: 'upvc', img: 'images/products/casement_handle_american.jpg' },
+  { id: 25, code: 'PM 25', name: 'Casement Handle Eco / Thumb', cat: 'upvc', img: 'images/products/casement_handle_eco_or_thumb.png' },
+  { id: 26, code: 'PM 26', name: 'T Handle', cat: 'upvc', img: 'images/products/t_handle.jpg' },
+  { id: 27, code: 'PM 27', name: 'Cocksphur Handle Eco', cat: 'upvc', img: 'images/products/cocksphur_handle_eco.png' },
+  { id: 28, code: 'PM 28', name: 'Cocksphur Handle', cat: 'upvc', img: 'images/products/cocksphur_handle.png' },
+  { id: 29, code: 'PM 29', name: 'Cocksphur Handle uPVC / Aluminium', cat: 'upvc', img: 'images/products/cockspur_handle_upvc_aluminium.png' },
+  { id: 30, code: 'PM 30', name: 'Allen Key Handle', cat: 'upvc', img: 'images/products/allen_key_handle.png' },
+  { id: 31, code: 'PM 31', name: 'Cresent Lock', cat: 'upvc', img: 'images/products/cresent_lock.png' },
+  { id: 32, code: 'PM 32', name: 'Casement Handle With Key', cat: 'upvc', img: 'images/products/casement_handle_with_key.png' },
+  { id: 33, code: 'PM 33', name: '3D Hinge', cat: 'upvc', img: 'images/products/3d_hinge.png' },
+  { id: 34, code: 'PM 34', name: 'Flat Hinge', cat: 'upvc', img: 'images/products/flat_hinge.png' },
+  { id: 35, code: 'PM 35', name: 'Butt Hinges (75 MM / 100MM)', cat: 'upvc', img: 'images/products/butt_hinges.png' },
+  { id: 36, code: 'PM 36', name: 'Concealed Hinge Door', cat: 'upvc', img: 'images/products/concealed_hinge_door.png' },
+  { id: 37, code: 'PM 37', name: 'Concealed Hinge Window 1', cat: 'upvc', img: 'images/products/concealed_hinge_window_1.png' },
+  { id: 38, code: 'PM 38', name: 'Concealed Hinge Window 2', cat: 'upvc', img: 'images/products/concealed_hinge_window_2.png' },
+  { id: 39, code: 'PM 39', name: 'L Hinge', cat: 'upvc', img: 'images/products/l_hinge.png' },
+  { id: 40, code: 'PM 40', name: 'Single Roller Flat', cat: 'upvc', img: 'images/products/single_roller_flat.png' },
+  { id: 41, code: 'PM 41', name: '10mm Mesh Roller', cat: 'upvc', img: 'images/products/10mm_mesh_roller.png' },
+  { id: 42, code: 'PM 42', name: '12mm Ball Bearing Roller', cat: 'upvc', img: 'images/products/12mm_ball_bearing_roller.png' },
+  { id: 43, code: 'PM 43', name: 'Single Roller Nylon Groove', cat: 'upvc', img: 'images/products/single_roller_nylon_groove.png' },
+  { id: 44, code: 'PM 44', name: 'Double Wheel Swing Roller', cat: 'upvc', img: 'images/products/double_wheel_swing_roller.png' },
+  { id: 45, code: 'PM 45', name: 'Adjustable Roller Nylon Groove SS / MS', cat: 'upvc', img: 'images/products/adjustable_roller_nylon_groove_ss_or_ms.png' },
+  { id: 46, code: 'PM 46', name: '4 Wheel Adjustable Roller', cat: 'upvc', img: 'images/products/4_wheel_adjustable_roller_ss.jpg' },
+  { id: 47, code: 'PM 47', name: '8 Wheel Adjustable Roller SS', cat: 'upvc', img: 'images/products/8_wheel_adjustable_roller_ss.png' },
+  { id: 48, code: 'PM 48', name: 'Casement Window Espag 400 MM To 1800 MM', cat: 'upvc', img: 'images/products/casement_window_espag_400_mm_to_1800_mm.png' },
+  { id: 49, code: 'PM 49', name: 'Sliding Window Espag 400 MM To 2000 MM', cat: 'upvc', img: 'images/products/sliding_window_espag_400_mm_to_2000_mm.png' },
+  { id: 50, code: 'PM 50', name: 'Sliding Door Espag 1000 MM To 2000 MM', cat: 'upvc', img: 'images/products/sliding_door_espag_1000_mm_to_2000_mm.png' },
+  { id: 51, code: 'PM 51', name: 'Door Espage With Cylinder Provision 18003585mm', cat: 'upvc', img: 'images/products/door_espage_with_cylinder_provision_18003585mm.png' },
+  { id: 52, code: 'PM 52', name: 'Casement Door Espag 1600mm35 1800mm35', cat: 'upvc', img: 'images/products/casement_door_espag_1600mm35_1800mm35.png' },
+  { id: 53, code: 'PM 53', name: 'D Handle Door Espag 1800 Mm9215', cat: 'upvc', img: 'images/products/d_handle_door_espag_1800_mm9215.png' },
+  { id: 54, code: 'PM 54', name: 'Cylinder with One Side Key One Side Knob', cat: 'upvc', img: 'images/products/cylinder_with_one_side_key_one_side_knob.png' },
+  { id: 55, code: 'PM 55', name: 'Cylinder With Both Side Key', cat: 'upvc', img: 'images/products/cylinder_with_both_side_key.png' },
+  { id: 56, code: 'PM 56', name: 'French Window / Door Stricker', cat: 'upvc', img: 'images/products/french_window_or_door_stricker.png' },
+  { id: 57, code: 'PM 57', name: 'Casement Keep', cat: 'upvc', img: 'images/products/casement_keep.png' },
+  { id: 58, code: 'PM 58', name: 'Sliding Keep', cat: 'upvc', img: 'images/products/sliding_keep.png' },
+  { id: 59, code: 'PM 59', name: 'Casement Striker 13 Axis', cat: 'upvc', img: 'images/products/casement_striker_13_axis.png' },
+  { id: 60, code: 'PM 60', name: 'Bathroom Lockbody', cat: 'upvc', img: 'images/products/bathroom_lockbody.png' },
+  { id: 61, code: 'PM 61', name: 'Lock Body 35mm', cat: 'upvc', img: 'images/products/lock_body_35mm.png' },
+  { id: 62, code: 'PM 62', name: 'Friction Stay SS/202/304', cat: 'upvc', img: 'images/products/friction_stay_ss_202_304.jpg' },
+  { id: 63, code: 'PM 63', name: 'Euro Groove Arm Stay SS/202/304', cat: 'upvc', img: 'images/products/euro_groove_arm_stay_ss_202_304.png' },
+  { id: 64, code: 'PM 64', name: 'Shoot Bolt 4" & 6" Inch', cat: 'upvc', img: 'images/products/shoot_bolt_4_6_inch.png' },
+  { id: 65, code: 'PM 65', name: 'Shoot Bolt White Coated', cat: 'upvc', img: 'images/products/shoot_bolt_white_coated.png' },
+  { id: 66, code: 'PM 66', name: 'Shoot Bolt Big 10" & 17" Inch', cat: 'upvc', img: 'images/products/shoot_bolt_7_inch_17_inch.png' },
+  { id: 67, code: 'PM 67', name: 'Aluminium Track Semi Solid', cat: 'upvc', img: 'images/products/aluminium_track_semi_solid.png' },
+  { id: 68, code: 'PM 68', name: 'Aluminium Track Solid', cat: 'upvc', img: 'images/products/aluminium_track_solid.png' },
+  { id: 69, code: 'PM 69', name: 'Aluminium Track Hollow', cat: 'upvc', img: 'images/products/aluminium_track_hollow.png' },
+  { id: 70, code: 'PM 70', name: 'Natural Mesh 304 G', cat: 'upvc', img: 'images/products/natural_mesh_304_g.png' },
+  { id: 71, code: 'PM 71', name: 'Black Cotted Mesh 304 G', cat: 'upvc', img: 'images/products/black_cotted_mesh_304_g.png' },
+  { id: 72, code: 'PM 72', name: 'Silicon', cat: 'upvc', img: 'images/products/silicone.jpg' },
+  { id: 73, code: 'PM 73', name: 'Gasket', cat: 'upvc', img: 'images/products/gasket.png' },
+  { id: 74, code: 'PM 74', name: 'Woolpile', cat: 'upvc', img: 'images/products/woolpile.png' },
+  { id: 75, code: 'PM 75', name: 'L Limit Bridge', cat: 'accessories', img: 'images/products/l_limit_bridge.png' },
+  { id: 76, code: 'PM 76', name: 'U Packer 1mm 2mm 3mm', cat: 'accessories', img: 'images/products/u_packer_1mm_2mm_3mm.png' },
+  { id: 77, code: 'PM 77', name: 'Glass Packer 1mm 3mm 5mm', cat: 'accessories', img: 'images/products/glass_packer_1mm_3mm_5mm.png' },
+  { id: 78, code: 'PM 78', name: 'Limit Bridge Small', cat: 'accessories', img: 'images/products/limit_bridge_small.png' },
+  { id: 79, code: 'PM 79', name: 'Limit Bridge Big', cat: 'accessories', img: 'images/products/limit_bridge_big.png' },
+  { id: 80, code: 'PM 80', name: 'Sliding Stopper Rectangle', cat: 'accessories', img: 'images/products/sliding_stopper_rectangle.png' },
+  { id: 81, code: 'PM 81', name: 'Sliding Stopper Round', cat: 'accessories', img: 'images/products/sliding_stopper_round.png' },
+  { id: 82, code: 'PM 82', name: 'Bump Stopper Premium', cat: 'accessories', img: 'images/products/bump_stoper_premium.png' },
+  { id: 83, code: 'PM 83', name: 'Bump Stopper PVC / Metal', cat: 'accessories', img: 'images/products/bump_stopper_pvc_or_metal.png' },
+  { id: 84, code: 'PM 84', name: 'Drainage Cap', cat: 'accessories', img: 'images/products/drainage_cap.png' },
+  { id: 85, code: 'PM 85', name: 'Fastener Cap', cat: 'accessories', img: 'images/products/fastener_cap.png' },
+  { id: 86, code: 'PM 86', name: 'Louvers With Cap', cat: 'accessories', img: 'images/products/louvers_with_cap.png' },
+  { id: 87, code: 'PM 87', name: 'Nylon Mesh Tool', cat: 'accessories', img: 'images/products/nylon_mesh_tool.png' },
+  { id: 88, code: 'PM 88', name: 'Metal Mesh Tool', cat: 'accessories', img: 'images/products/metal_mesh_tool.png' },
+  { id: 89, code: 'PM 88', name: 'Welding Paper', cat: 'accessories', img: 'images/products/welding_paper.png' },
+  { id: 90, code: 'PM 89', name: 'Recessed Dummy Handle', cat: 'accessories', img: 'images/products/recessed_dummy_handle.png' },
+  { id: 91, code: 'PM 90', name: 'Self Drilling Screw', cat: 'accessories', img: 'images/products/self_drilling_screw.png' },
+  { id: 92, code: 'PM 91', name: 'L Patti 30*30', cat: 'accessories', img: 'images/products/l_patti_30_30.png' },
+  { id: 93, code: 'PM 92', name: 'L Patti 12*50', cat: 'accessories', img: 'images/products/l_patti_12_50.png' },
+  { id: 94, code: 'PM 93', name: '27 MM Sliding Window Single Roller', cat: 'aluminium', img: 'images/products/27_mm_sliding_window_single_roller.png' },
+  { id: 95, code: 'PM 94', name: 'Adjustable Roller 25 / 27 / 29 mm', cat: 'aluminium', img: 'images/products/adjustable_roller_25_27_29_mm.png' },
+  { id: 96, code: 'PM 95', name: 'Double Roller V Groove 27 & 29 mm', cat: 'aluminium', img: 'images/products/double_roller_v_groove_27_29_mm.png' },
+  { id: 97, code: 'PM 96', name: 'Double Roller U Groove 27 & 29 mm', cat: 'aluminium', img: 'images/products/double_roller_u_groove_27_29_mm.png' },
+  { id: 98, code: 'PM 97', name: 'Double Wheel Ball Bearing Adjustable Roller', cat: 'aluminium', img: 'images/products/double_wheel_ball_bearing_adjustable_roller.png' },
+  { id: 99, code: 'PM 98', name: 'Four Wheel Ball Bearing Door Roller', cat: 'aluminium', img: 'images/products/four_wheel_ball_bearing_door_roller.png' },
+  { id: 100, code: 'PM 99', name: 'Euro Hinge 40 MM', cat: 'aluminium', img: 'images/products/euro_hinge_40_mm.png' },
+  { id: 101, code: 'PM 100', name: 'Euro Hinge 50 MM', cat: 'aluminium', img: 'images/products/euro_hinge_50_mm.png' },
+  { id: 102, code: 'PM 101', name: 'Euro Door Hinge 50 MM', cat: 'aluminium', img: 'images/products/euro_door_hinge_50_mm.png' },
+  { id: 103, code: 'PM 102', name: 'Euro Hinge 52 MM', cat: 'aluminium', img: 'images/products/euro_hinge_52_mm.png' },
+  { id: 104, code: 'PM 103', name: 'Euro Hinge Flat 45 MM', cat: 'aluminium', img: 'images/products/euro_hinge_flat_45_mm.png' },
+  { id: 105, code: 'PM 104', name: 'Sliding Corner Cleat 27 MM', cat: 'aluminium', img: 'images/products/sliding_corner_cleat_27_mm.png' },
+  { id: 106, code: 'PM 105', name: 'Sliding Corner Cleat 29 MM', cat: 'aluminium', img: 'images/products/sliding_corner_cleat_29_mm.webp' },
+  { id: 107, code: 'PM 106', name: 'Sliding Corner Cleat 37 MM', cat: 'aluminium', img: 'images/products/sliding_corner_cleat_37_mm.png' },
+  { id: 108, code: 'PM 107', name: 'Casement Corner Cleat 50 MM Frame', cat: 'aluminium', img: 'images/products/casement_corner_cleat_50_mm_frame.png' },
+  { id: 109, code: 'PM 108', name: 'Casement Corner Cleat 50 MM Sash', cat: 'aluminium', img: 'images/products/casement_corner_cleat_50_mm_sash.png' },
+  { id: 110, code: 'PM 109', name: 'Casement Corner Cleat 40 MM', cat: 'aluminium', img: 'images/products/casement_corner_cleat_40_mm.png' },
+  { id: 111, code: 'PM 110', name: 'Casement Corner Cleat', cat: 'aluminium', img: 'images/products/casement_corner_cleat.png' },
+  { id: 112, code: 'PM 111', name: 'Sliding Mullion Connector', cat: 'aluminium', img: 'images/products/sliding_mullion_connector.png' },
+  { id: 113, code: 'PM 112', name: 'Corner Cleat 1', cat: 'aluminium', img: 'images/products/corner_cleat.png' },
+  { id: 114, code: 'PM 113', name: 'Corner Cleat 2', cat: 'aluminium', img: 'images/products/corner_cleat_2.png' },
+  { id: 115, code: 'PM 114', name: 'Corner Cleat', cat: 'aluminium', img: 'images/products/corner_cleat_1.png' },
+];
+
+
+
+const CAT_LABELS = {
+  all: 'All Products',
+  upvc: 'uPVC Hardware',
+  aluminium: 'Aluminium Hardware',
+  accessories: 'Accessories',
+};
+
+// ── State ─────────────────────────────────────────────────────
+let activeCat = 'all';
+let searchQuery = '';
+let lightboxIndex = 0;
+let visibleProducts = [...PRODUCTS];
+
+// ── Render Grid ───────────────────────────────────────────────
+function renderGallery() {
+  const grid = document.getElementById('products-gallery');
+  let filtered = PRODUCTS;
+  if (activeCat !== 'all') filtered = filtered.filter(p => p.cat === activeCat);
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    filtered = filtered.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      CAT_LABELS[p.cat].toLowerCase().includes(q) ||
+      String(p.id).includes(q)
+    );
+  }
+  visibleProducts = filtered;
+  document.getElementById('filter-count').textContent =
+    `Showing ${filtered.length} product${filtered.length !== 1 ? 's' : ''}`;
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="no-results">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="56" height="56"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <p style="font-size:1.1rem;font-weight:700;margin-bottom:8px;">No products found</p>
+      <p style="font-size:0.9rem;">Try a different search term or category.</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map((p, i) => `
+    <div class="product-tile" data-id="${p.id}" onclick="openLightbox(${i})" tabindex="0" role="button" aria-label="View ${p.name}">
+      <div class="tile-img-wrap">
+        <img src="${p.img}" alt="${p.name}" loading="lazy" />
+        <div class="tile-overlay">
+          <button class="tile-overlay-btn">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            View
+          </button>
+          <button class="tile-overlay-btn" onclick="event.stopPropagation(); enquireProduct('${p.code}', '${p.name.replace(/'/g, "\\'")}')">
+            <svg fill="currentColor" viewBox="0 0 24 24" width="12" height="12"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Enquire
+          </button>
+        </div>
+      </div>
+      <div class="tile-body">
+        <div class="tile-num">${p.code}</div>
+        <div class="tile-name">${p.name}</div>
+        <div class="tile-cat">${CAT_LABELS[p.cat]}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Keyboard support
+  grid.querySelectorAll('.product-tile').forEach((tile, i) => {
+    tile.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
+    });
+  });
+}
+
+// ── Lightbox ──────────────────────────────────────────────────
+function openLightbox(index) {
+  lightboxIndex = index;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function updateLightbox() {
+  const p = visibleProducts[lightboxIndex];
+  document.getElementById('lb-img').src = p.img;
+  document.getElementById('lb-img').alt = p.name;
+  document.getElementById('lb-code').textContent = `${p.code} · ${CAT_LABELS[p.cat]}`;
+  document.getElementById('lb-title').textContent = p.name;
+  document.getElementById('lb-counter').textContent = `${lightboxIndex + 1} / ${visibleProducts.length}`;
+  document.getElementById('lb-whatsapp').href =
+    `https://wa.me/919953535910?text=Hi%2C%20I%20want%20to%20enquire%20about%20${encodeURIComponent(p.name)}%20(${p.code})`;
+}
+function enquireProduct(code, name) {
+  window.open(`https://wa.me/919953535910?text=Hi%2C%20I%20want%20to%20enquire%20about%20${encodeURIComponent(name)}%20(${code})`, '_blank');
+}
+window.openLightbox = openLightbox;
+window.enquireProduct = enquireProduct;
+
+// ── Event Listeners ───────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Handle URL ?cat= parameter from homepage category cards
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlCat = urlParams.get('cat');
+  if (urlCat && CAT_LABELS[urlCat]) {
+    activeCat = urlCat;
+    document.querySelectorAll('.filter-cat-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.cat === urlCat);
+    });
+  }
+
+  renderGallery();
+
+  // Filter buttons
+  document.querySelectorAll('.filter-cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCat = btn.dataset.cat;
+      renderGallery();
+    });
+  });
+
+  // Search
+  let searchTimer;
+  document.getElementById('gallery-search').addEventListener('input', e => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      searchQuery = e.target.value.trim();
+      renderGallery();
+    }, 250);
+  });
+
+  // Lightbox controls
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lightbox').addEventListener('click', e => {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+  });
+  document.getElementById('lb-prev').addEventListener('click', e => {
+    e.stopPropagation();
+    lightboxIndex = (lightboxIndex - 1 + visibleProducts.length) % visibleProducts.length;
+    updateLightbox();
+  });
+  document.getElementById('lb-next').addEventListener('click', e => {
+    e.stopPropagation();
+    lightboxIndex = (lightboxIndex + 1) % visibleProducts.length;
+    updateLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    const lb = document.getElementById('lightbox');
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') { lightboxIndex = (lightboxIndex - 1 + visibleProducts.length) % visibleProducts.length; updateLightbox(); }
+    if (e.key === 'ArrowRight') { lightboxIndex = (lightboxIndex + 1) % visibleProducts.length; updateLightbox(); }
+  });
+
+  // Scroll to top
+  const btn = document.getElementById('scroll-top');
+  window.addEventListener('scroll', () => btn.classList.toggle('visible', window.scrollY > 400), { passive: true });
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Mobile nav
+  const hamburger = document.getElementById('hamburger-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  hamburger.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open);
+  });
+  document.addEventListener('click', e => {
+    if (!mobileNav.contains(e.target) && !hamburger.contains(e.target)) {
+      mobileNav.classList.remove('open');
+      hamburger.classList.remove('open');
+    }
+  });
+
+  // Sticky header
+  window.addEventListener('scroll', () => {
+    document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+});
+</script>
+</body>
+</html>
