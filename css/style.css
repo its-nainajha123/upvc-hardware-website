@@ -42,7 +42,7 @@
 
 /* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
 body {
   font-family: var(--font-primary);
   color: var(--text-dark);
@@ -1858,9 +1858,11 @@ textarea.form-control {
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
   .about-badge { right: 0; bottom: -16px; }
 }
-@media (max-width: 680px) {
+@media (max-width: 768px) {
   :root { --topbar-h: 0px; }
   #topbar { display: none; }
+  .logo-name { font-size: 1.15rem; }
+  .logo-tagline { font-size: 0.55rem; letter-spacing: 1.2px; }
   .categories-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
   .products-grid { grid-template-columns: 1fr; }
   .gallery-grid { grid-template-columns: 1fr 1fr; }
