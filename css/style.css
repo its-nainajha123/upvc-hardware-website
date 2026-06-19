@@ -561,6 +561,78 @@ input, textarea, select {
   50% { transform: translateY(10px); opacity: 0.3; }
 }
 
+/* ── ABOUT SECTION ── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.about-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.about-stat-card {
+  padding: 16px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+  text-align: center;
+}
+.about-stat-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.about-stat-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.about-image-wrapper {
+  position: relative;
+}
+.about-image-container {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  height: 480px;
+}
+.about-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.about-badge {
+  position: absolute;
+  bottom: -24px;
+  right: -24px;
+  background: var(--accent);
+  color: var(--white);
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px rgba(244,121,32,0.4);
+  text-align: center;
+  z-index: 2;
+}
+.about-badge-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.about-badge-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
 /* ── PRODUCT CATEGORIES ── */
 #categories { padding: 90px 0; }
 .categories-grid {
@@ -1761,7 +1833,7 @@ textarea.form-control {
 }
 @media (max-width: 900px) {
   .nav-links { display: none; }
-  .nav-cta .btn-outline { display: none; }
+  .nav-cta .btn { display: none; }
   .hamburger { display: flex; }
   .categories-grid { grid-template-columns: repeat(2, 1fr); }
   .catalogue-grid { grid-template-columns: 1fr 1fr; }
@@ -1773,6 +1845,9 @@ textarea.form-control {
   .contact-grid { grid-template-columns: 1fr; }
   .process-timeline { padding-bottom: 16px; }
   .process-timeline::before { display: none; }
+  .hero-scroll { display: none; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-badge { right: 0; bottom: -16px; }
 }
 @media (max-width: 680px) {
   :root { --topbar-h: 0px; }
@@ -1792,6 +1867,16 @@ textarea.form-control {
   .dealer-benefits { grid-template-columns: 1fr; }
   .contact-form { padding: 24px; }
   .footer-bottom { flex-direction: column; text-align: center; }
+  .about-image-container { height: 320px; }
+  .about-badge {
+    right: 0;
+    bottom: -12px;
+    padding: 12px 18px;
+  }
+  .about-badge-num { font-size: 1.5rem; }
+  .about-badge-text { font-size: 0.65rem; }
+  .about-stats-grid { gap: 12px; }
+  .about-stat-card { padding: 12px; }
 }
 
 /* ── LOADING SKELETON ── */
